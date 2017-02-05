@@ -1,5 +1,5 @@
 # wxapp-decrypt-data-demo
-微信小程序加密服务
+微信小程序解密服务
 
 ## 1. cd wxapp-decrypt-data-demo/server
 
