@@ -10,3 +10,4 @@
 PS: 经过解密后，发现微信并没有返回unionid。参考官方文档，需要将小程序和公众号绑定到同一开放平台才可以获取到。
 
 解密结果：
+![image](http://github.com/tgzzl/wxapp-decrypt-data-demo/raw/master/RTX截图未命名.png)
