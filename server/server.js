@@ -18,8 +18,7 @@ function start(route) {
     if('/index' == pathname){
         var params = _url.query;
         if(params && params.encryptedData){
-          var data = decryptData(params.code.replace(/\s+/g,'+'), 
-            params.encryptedData.replace(/\s+/g,'+'), params.iv.replace(/\s+/g,'+'));
+          var data = decryptData(params.code, params.encryptedData, params.iv);
           response.write(data);
         }
     }else{
@@ -33,6 +32,10 @@ function start(route) {
 }
 
 function decryptData(code,encryptedData,iv) {
+  function decode(d){
+    return d.replace(/\s+/g,'+')
+  }
+  
   var data = ''
 
   var url = 'https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&appid='
@@ -42,9 +45,18 @@ function decryptData(code,encryptedData,iv) {
         res.on('data', (d) => { body += d })
            .on('end', () => { 
                body = JSON.parse(body);
-               var pc = new WXBizDataCrypt(appId, body.session_key.replace(/\s+/g,'+'))
+               var sessionKey = body.session_key;
+          
+               sessionKey = decode(sessionKey)
+               encryptedData = decode(encryptedData)
+               iv = decode(iv)
+               
+               var pc = new WXBizDataCrypt(appId, sessionKey)
                data = pc.decryptData(encryptedData, iv)
-               console.log('解密后:', JSON.stringify(body), data)
+
+               console.log(JSON.stringify(body), sessionKey)
+               console.log(encryptedData, iv)
+               console.log(data)
             });
     });
 
